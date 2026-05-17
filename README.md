@@ -1,10 +1,10 @@
-# ProgSU Blog
+# PROGSU Blog
 
-The official blog for ProgSU — newsletters, event recaps, technical writeups, and updates from Georgia State University's programming club.
+The official blog for PROGSU, newsletters, event recaps, technical writeups, and updates from Georgia State University's programming club.
 
 ## About
 
-ProgSU is Georgia State University's programming club. This blog is where we publish: member writeups, event recaps, technical deep-dives, and anything worth sharing with the GSU CS community. Signed, dated, free.
+PROGSU is Georgia State University's programming club. This blog is where we publish: member writeups, event recaps, technical deep-dives, and anything worth sharing with the GSU CS community. Signed, dated, free.
 
 ### What's Inside
 
@@ -88,7 +88,7 @@ blog/
 
 ## Contributing
 
-All club members are welcome to contribute — whether that's writing a new post, fixing a typo, or improving the site.
+All club members are welcome to contribute, whether that's writing a new post, fixing a typo, or improving the site.
 
 ### Writing a Post
 
@@ -126,10 +126,10 @@ draft: false
 
 ## Getting Help
 
-- Join the ProgSU Discord for questions
+- Join the PROGSU Discord for questions
 - Open a GitHub issue for bugs or site feedback
 - Reach out to a club officer for write access
 
 ---
 
-Built with care by progsu. Everyone is welcome to contribute.
+Built with care by PROGSU. Everyone is welcome to contribute.

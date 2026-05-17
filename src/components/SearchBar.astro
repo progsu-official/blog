@@ -1,0 +1,147 @@
+---
+interface Props {
+  postCount: number;
+}
+const { postCount } = Astro.props;
+---
+
+<div class="search-container">
+  <button class="search-bar" id="searchbar-trigger" aria-label="Open search">
+    <!-- CSS magnifying glass -->
+    <span class="search-icon" aria-hidden="true">
+      <span class="icon-circle">
+        <span class="icon-handle"></span>
+      </span>
+    </span>
+
+    <span class="search-placeholder">search posts...</span>
+
+    <kbd class="search-kbd">⌘K</kbd>
+  </button>
+
+  <p class="search-meta">{postCount} {postCount === 1 ? "post" : "posts"} &middot; progsu blog</p>
+</div>
+
+<script>
+  const trigger = document.getElementById("searchbar-trigger");
+
+  trigger?.addEventListener("click", () => {
+    document.getElementById("search-overlay")?.classList.add("open");
+    document.getElementById("search-overlay")?.setAttribute("aria-hidden", "false");
+    requestAnimationFrame(() => {
+      const input = document.getElementById("search-input") as HTMLInputElement | null;
+      if (input) { input.value = ""; input.dispatchEvent(new Event("input")); input.focus(); }
+    });
+  });
+
+  // ⌘K / Ctrl+K shortcut
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      trigger?.click();
+    }
+  });
+</script>
+
+<style>
+  .search-container {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(8, 8, 18, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 0.55rem;
+    padding: 0.65rem 0.9rem;
+    box-shadow:
+      0 0 32px rgba(168, 85, 247, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .search-bar:hover {
+    border-color: rgba(168, 85, 247, 0.55);
+    box-shadow:
+      0 0 40px rgba(168, 85, 247, 0.22),
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* ── CSS magnifying glass ── */
+  .search-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-circle {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid rgba(216, 180, 254, 0.7);
+    border-radius: 50%;
+    display: block;
+  }
+
+  .icon-handle {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 4px;
+    height: 1.5px;
+    background: rgba(216, 180, 254, 0.7);
+    transform: rotate(45deg);
+    transform-origin: center;
+    display: block;
+  }
+
+  .search-placeholder {
+    flex: 1;
+    text-align: left;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.02em;
+  }
+
+  .search-kbd {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.2rem;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .search-meta {
+    margin-top: 0.7rem;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 0.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+</style>

@@ -2,28 +2,45 @@
 import { NAV_LINKS, SITE_TITLE } from "@/consts";
 ---
 
-<header class="sticky top-0 z-50 border-b border-accent-purple/30 bg-bg-deep/95 backdrop-blur-sm"
-  style="box-shadow: 0 0 20px rgba(107, 34, 204, 0.3);">
-  <nav class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+<!--
+  Fixed, floating — no bg, no blur, completely transparent over the cosmic bg.
+  Left: purple orb (12px) + "progsu / blog"
+  Right: nav links + "/" keyboard badge
+-->
+<header style="position: fixed; top: 1.25rem; left: 1.5rem; right: 1.5rem; z-index: 30;">
+  <nav style="display: flex; align-items: center; justify-content: space-between;">
+
+    <!-- Left: orb + brand -->
     <a
       href="/"
-      class="font-pixel text-xs text-accent-cyan glow-cyan hover:text-accent-pink hover:glow-pink transition-colors duration-200"
+      style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;"
     >
-      {SITE_TITLE}
+      <span
+        class="orb"
+        style="width: 12px; height: 12px;"
+        aria-hidden="true"
+      ></span>
+      <span style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: .15em; color: rgba(255,255,255,.65); text-transform: lowercase;">
+        progsu&nbsp;<span style="color: rgba(168,85,247,.6);">/</span>&nbsp;blog
+      </span>
     </a>
-    <ul class="flex items-center gap-8">
+
+    <!-- Right: links + kbd badge -->
+    <div style="display: flex; align-items: center; gap: 1.2rem;">
       {
         NAV_LINKS.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class="font-vt text-lg text-steel-blue hover:text-lavender transition-colors duration-200"
-            >
-              {link.label}
-            </a>
-          </li>
+          <a
+            href={link.href}
+            style="font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: .12em; color: rgba(255,255,255,.5); text-decoration: none; text-transform: lowercase; transition: color 0.15s ease;"
+            onmouseover="this.style.color='rgba(255,255,255,.9)'"
+            onmouseout="this.style.color='rgba(255,255,255,.5)'"
+          >
+            {link.label}
+          </a>
         ))
       }
-    </ul>
+      <kbd class="kbd" aria-label="Press / to search">/</kbd>
+    </div>
+
   </nav>
 </header>

@@ -2,13 +2,25 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-auto border-t border-accent-purple/30 py-8 text-center"
-  style="box-shadow: 0 -4px 20px rgba(107, 34, 204, 0.15);">
-  <p class="font-vt text-lg text-steel-blue">
-    &copy; {year}
-    <a href="https://progsu.com" class="text-accent-cyan hover:glow-cyan transition-all duration-200">
-      ProgSU
-    </a>
-    &mdash; Programming Society at Georgia State University
-  </p>
+<footer style="border-top: 1px solid rgba(168,85,247,.12); margin-top: 4rem; padding: 2rem; text-align: center;">
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+    <!-- Small orb (6px) -->
+    <span
+      class="orb"
+      style="width: 6px; height: 6px;"
+      aria-hidden="true"
+    ></span>
+    <p style="font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: .18em; color: rgba(255,255,255,.28); text-transform: lowercase;">
+      &copy; {year}&nbsp;
+      <a
+        href="https://progsu.com"
+        style="color: rgba(255,255,255,.28); text-decoration: none; transition: color 0.15s ease;"
+        onmouseover="this.style.color='rgba(168,85,247,.7)'"
+        onmouseout="this.style.color='rgba(255,255,255,.28)'"
+      >
+        progsu
+      </a>
+      &nbsp;&mdash;&nbsp;programming society at georgia state university
+    </p>
+  </div>
 </footer>

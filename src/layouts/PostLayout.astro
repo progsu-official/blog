@@ -10,41 +10,85 @@ const { post } = Astro.props;
 const { title, date, author, tags, description } = post.data;
 const formattedDate = date.toLocaleDateString("en-US", {
   year: "numeric",
-  month: "long",
+  month: "short",
   day: "numeric",
 });
 ---
 
 <Layout title={title} description={description}>
   <article>
-    <header class="mb-10 space-y-5 border-b border-accent-purple/30 pb-8">
-      {
-        tags.length > 0 && (
-          <div class="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <span class="rounded-sm border border-accent-purple/50 bg-accent-purple/10 px-2 py-0.5 font-pixel text-[9px] text-accent-purple">
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )
-      }
-      <h1 class="font-pixel text-base leading-loose text-lavender">{title}</h1>
-      <p class="font-vt text-xl text-steel-blue">{description}</p>
-      <div class="flex items-center gap-3 font-vt text-lg text-steel-blue">
+    <header class="post-header">
+      <!-- Meta -->
+      <div class="post-meta">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        <span class="text-accent-purple">//</span>
+        <span class="sep">/</span>
         <span>{author}</span>
+        {tags.length > 0 && (
+          <>
+            <span class="sep">/</span>
+            {tags.map((tag) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </>
+        )}
       </div>
+
+      <!-- Title -->
+      <h1 class="post-title">{title}</h1>
+
+      <!-- Description -->
+      <p class="post-desc">{description}</p>
     </header>
 
-    <div class="prose prose-invert max-w-none font-vt text-lg
-      prose-headings:font-pixel prose-headings:leading-loose
-      prose-a:text-accent-cyan prose-a:no-underline hover:prose-a:underline
-      prose-code:text-accent-cyan prose-code:font-vt prose-code:text-lg
-      prose-pre:border prose-pre:border-accent-purple/30 prose-pre:bg-bg-mid
-      prose-strong:text-lavender">
+    <!-- Body: Tailwind prose configured for mono stack + space palette -->
+    <div class="prose">
       <slot />
     </div>
   </article>
 </Layout>
+
+<style>
+  .post-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.12);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.28);
+    margin-bottom: 1rem;
+    text-transform: lowercase;
+  }
+
+  .sep {
+    color: rgba(168, 85, 247, 0.4);
+  }
+
+  .tag {
+    color: rgba(168, 85, 247, 0.6);
+  }
+
+  .post-title {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .post-desc {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.4);
+  }
+</style>

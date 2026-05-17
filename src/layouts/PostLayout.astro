@@ -17,26 +17,33 @@ const formattedDate = date.toLocaleDateString("en-US", {
 
 <Layout title={title} description={description}>
   <article>
-    <header class="mb-10 space-y-4 border-b border-bg-mid pb-8">
-      <div class="flex flex-wrap gap-2">
-        {
-          tags.map((tag) => (
-            <span class="rounded border border-accent-purple/40 bg-accent-purple/10 px-2 py-0.5 font-mono text-xs text-accent-purple">
-              #{tag}
-            </span>
-          ))
-        }
-      </div>
-      <h1 class="text-3xl font-bold leading-tight text-lavender">{title}</h1>
-      <p class="text-base text-steel-blue">{description}</p>
-      <div class="flex items-center gap-3 text-sm text-steel-blue">
+    <header class="mb-10 space-y-5 border-b border-accent-purple/30 pb-8">
+      {
+        tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span class="rounded-sm border border-accent-purple/50 bg-accent-purple/10 px-2 py-0.5 font-pixel text-[9px] text-accent-purple">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
+      <h1 class="font-pixel text-base leading-loose text-lavender">{title}</h1>
+      <p class="font-vt text-xl text-steel-blue">{description}</p>
+      <div class="flex items-center gap-3 font-vt text-lg text-steel-blue">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        <span>&middot;</span>
+        <span class="text-accent-purple">//</span>
         <span>{author}</span>
       </div>
     </header>
 
-    <div class="prose prose-invert max-w-none prose-code:font-mono prose-pre:border prose-pre:border-bg-mid">
+    <div class="prose prose-invert max-w-none font-vt text-lg
+      prose-headings:font-pixel prose-headings:leading-loose
+      prose-a:text-accent-cyan prose-a:no-underline hover:prose-a:underline
+      prose-code:text-accent-cyan prose-code:font-vt prose-code:text-lg
+      prose-pre:border prose-pre:border-accent-purple/30 prose-pre:bg-bg-mid
+      prose-strong:text-lavender">
       <slot />
     </div>
   </article>

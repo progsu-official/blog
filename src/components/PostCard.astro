@@ -14,25 +14,30 @@ const formattedDate = date.toLocaleDateString("en-US", {
 });
 ---
 
-<article class="group rounded-lg border border-bg-mid bg-bg-mid/40 p-6 transition-all duration-200 hover:border-accent-purple hover:bg-bg-mid/70">
+<article
+  class="group rounded-sm border border-accent-purple/30 bg-bg-mid/40 p-6 transition-all duration-200 hover:border-accent-pink/60 hover:bg-bg-mid/60"
+  style="transition: box-shadow 0.2s;"
+  onmouseenter="this.style.boxShadow='0 0 16px rgba(214,58,175,0.25)'"
+  onmouseleave="this.style.boxShadow='none'"
+>
   <a href={`/posts/${post.slug}`} class="block space-y-3">
-    <div class="flex items-center gap-3 text-xs text-steel-blue">
+    <div class="flex items-center gap-3 font-vt text-base text-steel-blue">
       <time datetime={date.toISOString()}>{formattedDate}</time>
-      <span>&middot;</span>
+      <span class="text-accent-purple">//</span>
       <span>{author}</span>
     </div>
 
-    <h2 class="text-lg font-semibold text-lavender group-hover:text-accent-cyan transition-colors duration-200">
+    <h2 class="font-pixel text-xs leading-relaxed text-lavender group-hover:text-accent-cyan transition-colors duration-200">
       {title}
     </h2>
 
-    <p class="text-sm leading-relaxed text-steel-blue">{description}</p>
+    <p class="font-vt text-lg leading-snug text-steel-blue">{description}</p>
 
     {
       tags.length > 0 && (
         <div class="flex flex-wrap gap-2 pt-1">
           {tags.map((tag) => (
-            <span class="rounded border border-accent-purple/40 bg-accent-purple/10 px-2 py-0.5 font-mono text-xs text-accent-purple">
+            <span class="rounded-sm border border-accent-purple/50 bg-accent-purple/10 px-2 py-0.5 font-pixel text-[9px] text-accent-purple">
               #{tag}
             </span>
           ))}

@@ -15,8 +15,8 @@ export default {
         "steel-blue": "#8B9FD4",
       },
       fontFamily: {
-        mono: ["'JetBrains Mono'", "monospace"],
-        sans: ["'Inter'", "system-ui", "sans-serif"],
+        pixel: ["'Press Start 2P'", "monospace"],
+        vt: ["'VT323'", "monospace"],
       },
       typography: (theme) => ({
         invert: {
@@ -27,6 +27,8 @@ export default {
             "--tw-prose-bold": theme("colors.lavender"),
             "--tw-prose-code": theme("colors.accent-cyan"),
             "--tw-prose-pre-bg": theme("colors.bg-mid"),
+            fontFamily: "'VT323', monospace",
+            fontSize: "1.2rem",
           },
         },
       }),

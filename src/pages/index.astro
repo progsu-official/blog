@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import PostCard from "@/components/PostCard.astro";
+import SearchBar from "@/components/SearchBar.astro";
 import { SITE_DESCRIPTION } from "@/consts";
 
 const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
@@ -10,16 +11,18 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
 ---
 
 <Layout>
+  <!-- Hero with floating search bar -->
   <section class="hero">
     <h1 class="hero-title">progsu / blog</h1>
     <p class="hero-desc">{SITE_DESCRIPTION}</p>
+    <SearchBar postCount={posts.length} />
   </section>
 
   <hr class="divider" />
 
   {
     posts.length === 0 ? (
-      <p class="empty">no posts yet — check back soon.</p>
+      <p class="empty">no posts yet. check back soon.</p>
     ) : (
       <div class="post-list">
         {posts.map((post) => (
@@ -32,22 +35,23 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
 
 <style>
   .hero {
-    margin-bottom: 2.5rem;
+    position: relative;
+    min-height: 220px;
+    margin-bottom: 4rem;
+    padding-bottom: 5rem;
   }
 
   .hero-title {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
-    letter-spacing: -.01em;
+    letter-spacing: -0.01em;
     color: rgba(255, 255, 255, 0.88);
     margin-bottom: 0.75rem;
-    line-height: 1.6;
+    line-height: 1.5;
   }
 
   .hero-desc {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     line-height: 1.75;
     color: rgba(255, 255, 255, 0.38);
     max-width: 52ch;
@@ -66,8 +70,7 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
   }
 
   .empty {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.28);
     letter-spacing: 0.08em;
   }

@@ -2,27 +2,15 @@
 import { NAV_LINKS, SITE_TITLE } from "@/consts";
 ---
 
-<!--
-  Fixed, floating — no bg, no blur, completely transparent over the cosmic bg.
-  Left: purple orb (12px) + "progsu / blog"
-  Right: nav links + "/" keyboard badge
--->
 <header style="position: fixed; top: 1.25rem; left: 1.5rem; right: 1.5rem; z-index: 30;">
   <nav style="display: flex; align-items: center; justify-content: space-between;">
 
-    <!-- Left: orb + brand -->
+    <!-- Left: brand -->
     <a
       href="/"
-      style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;"
+      style="text-decoration: none; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: .15em; color: rgba(255,255,255,.65); text-transform: lowercase;"
     >
-      <span
-        class="orb"
-        style="width: 12px; height: 12px;"
-        aria-hidden="true"
-      ></span>
-      <span style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: .15em; color: rgba(255,255,255,.65); text-transform: lowercase;">
-        progsu&nbsp;<span style="color: rgba(168,85,247,.6);">/</span>&nbsp;blog
-      </span>
+      progsu / blog
     </a>
 
     <!-- Right: links + kbd badge -->
@@ -31,7 +19,7 @@ import { NAV_LINKS, SITE_TITLE } from "@/consts";
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            style="font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: .12em; color: rgba(255,255,255,.5); text-decoration: none; text-transform: lowercase; transition: color 0.15s ease;"
+            style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: .12em; color: rgba(255,255,255,.5); text-decoration: none; text-transform: lowercase; transition: color 0.15s ease;"
             onmouseover="this.style.color='rgba(255,255,255,.9)'"
             onmouseout="this.style.color='rgba(255,255,255,.5)'"
           >
@@ -39,7 +27,7 @@ import { NAV_LINKS, SITE_TITLE } from "@/consts";
           </a>
         ))
       }
-      <kbd class="kbd" aria-label="Press / to search">/</kbd>
+      <kbd id="search-trigger" class="kbd" role="button" tabindex="0" aria-label="Press / to search" style="cursor: pointer;">/</kbd>
     </div>
 
   </nav>

@@ -1,13 +1,13 @@
 ---
-title: "Getting Started with Data Structures in Python"
+title: "data structures intro"
 date: 2026-05-17
 author: "John Sang"
 tags: ["python", "data-structures", "beginners"]
-description: "A practical introduction to arrays, stacks, and queues using Python — written for members just starting their CS journey."
+description: "A practical introduction to arrays, stacks, and queues using Python, written for members just starting their CS journey."
 draft: false
 ---
 
-Welcome to the ProgSU Blog. This is the first of many technical articles we'll be publishing to help members level up their programming skills.
+Welcome to the ProgSU Blog. This is the first of many writeups we'll be putting out to help members grow their programming skills.
 
 ## Why Data Structures Matter
 
@@ -15,7 +15,7 @@ Data structures are the building blocks of every non-trivial program you'll writ
 
 ## Arrays
 
-An array stores elements in contiguous memory and gives you **O(1) random access**.
+An array stores elements in contiguous memory and gives you **O(1)** random access.
 
 ```python
 nums = [10, 20, 30, 40]
@@ -24,7 +24,7 @@ print(nums[2])  # 30
 
 ## Stacks
 
-A stack is **LIFO** — Last In, First Out. Python lists work great as stacks.
+A stack is **LIFO** (last in, first out). Python lists work great as stacks.
 
 ```python
 stack = []
@@ -36,7 +36,7 @@ print(stack.pop())  # c
 
 ## Queues
 
-A queue is **FIFO** — First In, First Out. Use `collections.deque` for O(1) popleft.
+A queue is **FIFO** (first in, first out). Use `collections.deque` for O(1) popleft.
 
 ```python
 from collections import deque

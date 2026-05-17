@@ -3,24 +3,16 @@ const year = new Date().getFullYear();
 ---
 
 <footer style="border-top: 1px solid rgba(168,85,247,.12); margin-top: 4rem; padding: 2rem; text-align: center;">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-    <!-- Small orb (6px) -->
-    <span
-      class="orb"
-      style="width: 6px; height: 6px;"
-      aria-hidden="true"
-    ></span>
-    <p style="font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: .18em; color: rgba(255,255,255,.28); text-transform: lowercase;">
-      &copy; {year}&nbsp;
-      <a
-        href="https://progsu.com"
-        style="color: rgba(255,255,255,.28); text-decoration: none; transition: color 0.15s ease;"
-        onmouseover="this.style.color='rgba(168,85,247,.7)'"
-        onmouseout="this.style.color='rgba(255,255,255,.28)'"
-      >
-        progsu
-      </a>
-      &nbsp;&mdash;&nbsp;programming society at georgia state university
-    </p>
-  </div>
+  <p style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: .15em; color: rgba(255,255,255,.28); text-transform: lowercase;">
+    &copy; {year}
+    <a
+      href="https://progsu.com"
+      style="color: rgba(255,255,255,.28); text-decoration: none; transition: color 0.15s ease;"
+      onmouseover="this.style.color='rgba(168,85,247,.7)'"
+      onmouseout="this.style.color='rgba(255,255,255,.28)'"
+    >
+      progsu
+    </a>
+    . programming society at georgia state university
+  </p>
 </footer>

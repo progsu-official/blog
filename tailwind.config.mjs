@@ -17,6 +17,7 @@ export default {
         DEFAULT: {
           css: {
             fontFamily: "'SF Mono', Menlo, Monaco, monospace",
+            fontSize: "0.75rem",
             color: "rgba(255,255,255,0.85)",
             maxWidth: "none",
             lineHeight: "1.75",

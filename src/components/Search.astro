@@ -131,10 +131,12 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
   // Close button (esc badge)
   document.getElementById("search-esc").addEventListener("click", close);
 
-  // Navbar "/" badge
-  document.getElementById("search-trigger")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    open();
+  // Navbar "/" badge — wait for full DOM so Navbar is present
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("search-trigger")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      open();
+    });
   });
 </script>
 
@@ -143,15 +145,15 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
     position: fixed;
     inset: 0;
     z-index: 100;
-    background: rgba(2, 2, 10, 0.75);
-    backdrop-filter: blur(4px);
+    background: rgba(2, 2, 10, 0.7);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-top: 8rem;
+    padding-top: 6rem;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.12s ease;
   }
 
   #search-overlay.open {
@@ -161,27 +163,27 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
 
   #search-box {
     width: 100%;
-    max-width: 600px;
+    max-width: 420px;
     margin: 0 1.5rem;
-    background: rgba(6, 6, 15, 0.95);
-    border: 1px solid rgba(168, 85, 247, 0.25);
-    border-radius: 6px;
+    background: rgba(6, 6, 15, 0.97);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 5px;
     overflow: hidden;
-    box-shadow: 0 0 40px rgba(76, 29, 149, 0.3), 0 8px 32px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 24px rgba(76, 29, 149, 0.2), 0 8px 24px rgba(0, 0, 0, 0.7);
   }
 
   #search-input-row {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid rgba(168, 85, 247, 0.12);
+    gap: 0.5rem;
+    padding: 0.6rem 0.85rem;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.1);
   }
 
   #search-prompt {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: rgba(168, 85, 247, 0.6);
+    font-size: 0.65rem;
+    color: rgba(168, 85, 247, 0.5);
     flex-shrink: 0;
   }
 
@@ -191,23 +193,23 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
     border: none;
     outline: none;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.85);
     letter-spacing: 0.02em;
     caret-color: rgba(168, 85, 247, 0.8);
   }
 
   #search-input::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.18);
   }
 
   #search-esc {
     font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 0.2rem 0.45rem;
+    font-size: 0.48rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.15rem 0.35rem;
     border-radius: 3px;
     cursor: pointer;
     flex-shrink: 0;
@@ -215,42 +217,43 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
   }
 
   #search-esc:hover {
-    color: rgba(255, 255, 255, 0.55);
-    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.25);
   }
 
   #search-results {
     list-style: none;
     margin: 0;
-    padding: 0.25rem 0;
-    max-height: 320px;
+    padding: 0.3rem 0;
+    max-height: 240px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(168, 85, 247, 0.3) transparent;
+    scrollbar-color: rgba(168, 85, 247, 0.2) transparent;
   }
 
-  #search-results li a {
+  :global(#search-results li a) {
     display: block;
-    padding: 0.6rem 1rem;
+    padding: 0.45rem 0.85rem 0.45rem 1.5rem;
     text-decoration: none;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.65rem;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.55);
     transition: color 0.1s ease, background 0.1s ease;
   }
 
-  #search-results li:hover a,
-  #search-results li.active a {
-    color: rgba(216, 180, 254, 0.9);
-    background: rgba(76, 29, 149, 0.15);
+  :global(#search-results li:hover a),
+  :global(#search-results li.active a) {
+    color: rgba(216, 180, 254, 0.88);
+    background: rgba(76, 29, 149, 0.12);
   }
 
   #search-empty {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.2);
     text-align: center;
-    padding: 1.5rem 1rem;
+    padding: 1rem;
     letter-spacing: 0.08em;
   }
 </style>

@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+const { title, date, author, tags, description } = post.data;
+const formattedDate = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<article class="group rounded-lg border border-bg-mid bg-bg-mid/40 p-6 transition-all duration-200 hover:border-accent-purple hover:bg-bg-mid/70">
+  <a href={`/posts/${post.slug}`} class="block space-y-3">
+    <div class="flex items-center gap-3 text-xs text-steel-blue">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+      <span>&middot;</span>
+      <span>{author}</span>
+    </div>
+
+    <h2 class="text-lg font-semibold text-lavender group-hover:text-accent-cyan transition-colors duration-200">
+      {title}
+    </h2>
+
+    <p class="text-sm leading-relaxed text-steel-blue">{description}</p>
+
+    {
+      tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 pt-1">
+          {tags.map((tag) => (
+            <span class="rounded border border-accent-purple/40 bg-accent-purple/10 px-2 py-0.5 font-mono text-xs text-accent-purple">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+  </a>
+</article>

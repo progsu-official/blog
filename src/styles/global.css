@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-deep: #0d0b1a;
+    --color-bg-dark: #1e1c6e;
+    --color-bg-mid: #2a2e4a;
+    --color-accent-pink: #d63aaf;
+    --color-accent-purple: #6b22cc;
+    --color-accent-cyan: #00e5ff;
+    --color-lavender: #f2ddff;
+    --color-steel-blue: #8b9fd4;
+  }
+
+  html {
+    @apply bg-bg-deep text-lavender font-sans antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen flex flex-col;
+  }
+
+  ::selection {
+    background-color: #6b22cc55;
+    color: #f2ddff;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-accent-cyan outline-offset-2;
+  }
+}
+
+@layer utilities {
+  .glow-cyan {
+    text-shadow: 0 0 12px #00e5ff99;
+  }
+  .glow-pink {
+    text-shadow: 0 0 12px #d63aaf99;
+  }
+}

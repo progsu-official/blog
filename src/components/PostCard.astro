@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, date, author, tags, description } = post.data;
+const { title, date, description } = post.data;
 const formattedDate = date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "short",
@@ -17,23 +17,10 @@ const formattedDate = date.toLocaleDateString("en-US", {
 <article>
   <a href={`/posts/${post.slug}`} class="post-card-link">
     <div class="post-card">
-      <!-- Meta row -->
       <div class="post-meta">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        {tags.length > 0 && (
-          <>
-            <span class="sep">/</span>
-            {tags.map((tag) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </>
-        )}
       </div>
-
-      <!-- Title -->
       <h2 class="post-title">{title}</h2>
-
-      <!-- Description -->
       <p class="post-desc">{description}</p>
     </div>
   </a>
@@ -60,29 +47,15 @@ const formattedDate = date.toLocaleDateString("en-US", {
   }
 
   .post-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.28);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
     text-transform: lowercase;
   }
 
-  .sep {
-    color: rgba(168, 85, 247, 0.4);
-  }
-
-  .tag {
-    color: rgba(168, 85, 247, 0.6);
-  }
-
   .post-title {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
     letter-spacing: -0.01em;
     color: rgba(255, 255, 255, 0.85);
@@ -96,8 +69,7 @@ const formattedDate = date.toLocaleDateString("en-US", {
   }
 
   .post-desc {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.4);
   }

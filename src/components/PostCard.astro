@@ -20,13 +20,11 @@ const formattedDate = date.toLocaleDateString("en-US", {
       <!-- Meta row -->
       <div class="post-meta">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        <span class="sep">/</span>
-        <span>{author}</span>
         {tags.length > 0 && (
           <>
             <span class="sep">/</span>
             {tags.map((tag) => (
-              <span class="tag">#{tag}</span>
+              <span class="tag">{tag}</span>
             ))}
           </>
         )}

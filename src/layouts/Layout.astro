@@ -1,5 +1,4 @@
 ---
-import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import Search from "@/components/Search.astro";
 import "@/styles/global.css";
@@ -29,7 +28,6 @@ const pageTitle = title === SITE_TITLE ? title : `${title} / ${SITE_TITLE}`;
   </head>
   <body>
     <Search />
-    <Navbar />
 
     <main id="main-content">
       <slot />
@@ -58,19 +56,9 @@ const pageTitle = title === SITE_TITLE ? title : `${title} / ${SITE_TITLE}`;
   #main-content {
     position: relative;
     z-index: 1;
-    flex: 1;
     width: 100%;
     max-width: 896px;
     margin: 0 auto;
     padding: 0 2rem 6rem;
-  }
-
-  @media (min-width: 768px) {
-    #main-content {
-      margin-left: 176px;
-      margin-right: auto;
-      max-width: calc(896px + 176px);
-      padding-left: 3rem;
-    }
   }
 </style>

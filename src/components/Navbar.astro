@@ -2,11 +2,23 @@
 import { NAV_LINKS } from "@/consts";
 ---
 
-<!-- ── Desktop: fixed left sidebar ─────────────────────────── -->
-<nav id="sidebar-nav" aria-label="Site navigation">
-  <div class="nav-links">
-    {
-      NAV_LINKS.map((link) => (
+<header id="top-header">
+  <div class="header-inner">
+
+    <!-- Wordmark -->
+    <a
+      href="/"
+      class="wordmark"
+      style="text-shadow: 0 0 8px rgba(147,51,234,0);"
+      onmouseover="this.style.textShadow='0 0 12px rgba(147,51,234,1), 0 0 30px rgba(147,51,234,0.6), 0 0 60px rgba(147,51,234,0.25)';"
+      onmouseout="this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
+    >
+      progsu / blog
+    </a>
+
+    <!-- Nav links -->
+    <nav class="header-nav" aria-label="Site navigation">
+      {NAV_LINKS.map((link) => (
         <a
           href={link.href}
           class="nav-link"
@@ -16,209 +28,83 @@ import { NAV_LINKS } from "@/consts";
         >
           {link.label.toLowerCase()}
         </a>
-      ))
-    }
-    <button
-      id="search-trigger"
-      class="nav-link search-btn"
-      aria-label="Search"
-      style="background:none;border:none;cursor:pointer;text-shadow: 0 0 8px rgba(147,51,234,0);"
-      onmouseover="this.style.color='rgba(255,255,255,1)';this.style.textShadow='0 0 12px rgba(147,51,234,1), 0 0 30px rgba(147,51,234,0.6), 0 0 60px rgba(147,51,234,0.25)';"
-      onmouseout="this.style.color='rgba(255,255,255,0.40)';this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
-    >
-      search /
-    </button>
+      ))}
+      <button
+        id="search-trigger"
+        class="nav-link search-btn"
+        aria-label="Search"
+        style="background:none;border:none;cursor:pointer;text-shadow: 0 0 8px rgba(147,51,234,0);"
+        onmouseover="this.style.color='rgba(255,255,255,1)';this.style.textShadow='0 0 12px rgba(147,51,234,1), 0 0 30px rgba(147,51,234,0.6), 0 0 60px rgba(147,51,234,0.25)';"
+        onmouseout="this.style.color='rgba(255,255,255,0.40)';this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
+      >
+        search /
+      </button>
+    </nav>
+
   </div>
-</nav>
-
-<!-- ── Mobile: hamburger + full-screen overlay ──────────────── -->
-<button
-  id="mobile-menu-btn"
-  aria-label="Open menu"
-  aria-expanded="false"
-  aria-controls="mobile-overlay"
->
-  <span class="bar"></span>
-  <span class="bar"></span>
-</button>
-
-<div id="mobile-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
-  <button id="mobile-close" aria-label="Close menu">✕</button>
-  <nav class="mobile-nav-links">
-    {
-      NAV_LINKS.map((link) => (
-        <a
-          href={link.href}
-          class="mobile-nav-link"
-          style="text-shadow: 0 0 8px rgba(147,51,234,0);"
-          onmouseover="this.style.color='rgba(255,255,255,1)';this.style.textShadow='0 0 12px rgba(147,51,234,1), 0 0 30px rgba(147,51,234,0.6), 0 0 60px rgba(147,51,234,0.25)';"
-          onmouseout="this.style.color='rgba(255,255,255,0.40)';this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
-        >
-          {link.label.toLowerCase()}
-        </a>
-      ))
-    }
-  </nav>
-</div>
-
-<script>
-  const btn     = document.getElementById("mobile-menu-btn");
-  const overlay = document.getElementById("mobile-overlay");
-  const close   = document.getElementById("mobile-close");
-
-  function openMenu() {
-    overlay?.setAttribute("aria-hidden", "false");
-    overlay?.classList.add("open");
-    btn?.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeMenu() {
-    overlay?.setAttribute("aria-hidden", "true");
-    overlay?.classList.remove("open");
-    btn?.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-  }
-
-  btn?.addEventListener("click", openMenu);
-  close?.addEventListener("click", closeMenu);
-  overlay?.addEventListener("click", (e) => {
-    if (e.target === overlay) closeMenu();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
-  });
-</script>
+</header>
 
 <style>
-  /* ── Desktop sidebar ─────────────────────────────────────── */
-  #sidebar-nav {
+  #top-header {
     position: fixed;
-    left: 0;
     top: 0;
-    height: 100vh;
-    width: 160px;
-    z-index: 30;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 2rem;
+    left: 0;
+    right: 0;
+    height: 3.5rem;
+    background: rgba(0, 0, 0, 0.90);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 9999;
   }
 
-  @media (min-width: 768px) {
-    #sidebar-nav { display: flex; }
-  }
-
-  .nav-links {
+  .header-inner {
+    width: 100%;
+    max-width: calc(896px + 4rem);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .wordmark {
+    font-family: 'Noto Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.80);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.3s, text-shadow 0.3s;
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
   }
 
   .nav-link {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.40);
-    letter-spacing: 0;
-    transition: color 0.3s ease;
     text-decoration: none;
-    text-align: left;
-    padding: 0;
-    line-height: 1.4;
+    letter-spacing: 0.05em;
+    transition: color 0.3s, text-shadow 0.3s;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   .search-btn {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
-  /* ── Mobile hamburger ────────────────────────────────────── */
-  #mobile-menu-btn {
-    position: fixed;
-    top: 1.25rem;
-    right: 1.25rem;
-    z-index: 40;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  #mobile-menu-btn:hover {
-    background: rgba(255, 255, 255, 0.10);
-  }
-
-  @media (min-width: 768px) {
-    #mobile-menu-btn { display: none; }
-  }
-
-  .bar {
-    display: block;
-    width: 16px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.60);
-  }
-
-  /* ── Mobile overlay ──────────────────────────────────────── */
-  #mobile-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(12px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-
-  #mobile-overlay.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  #mobile-close {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.35);
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-
-  #mobile-close:hover {
-    color: rgba(255, 255, 255, 0.80);
-  }
-
-  .mobile-nav-links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .mobile-nav-link {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1.25rem;
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.40);
-    text-decoration: none;
-    letter-spacing: 0;
-    transition: color 0.3s;
+  /* Collapse some links on very small screens */
+  @media (max-width: 400px) {
+    .header-nav { gap: 1rem; }
+    .nav-link { font-size: 0.65rem; }
   }
 </style>

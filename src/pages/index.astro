@@ -13,29 +13,22 @@ const postCount = posts.length;
 <Layout>
 
   <!-- ═══════════════════════════════════════════════════
-       HERO — Section 5B: text-only, pure black
+       HERO — Section 5B
   ═══════════════════════════════════════════════════ -->
   <section id="hero">
     <div class="hero-inner float-in">
-      <h1 class="hero-headline glow-pulse-title">
-        {["p","r","o","g","s","u"].map(char => (
-          <span class="glitch-char">{char}</span>
-        ))}<span class="hero-slash"> / </span>blog
-      </h1>
+      <h1 class="hero-headline">progsu / blog</h1>
       <p class="hero-desc">{SITE_DESCRIPTION}</p>
     </div>
   </section>
 
 
   <!-- ═══════════════════════════════════════════════════
-       POSTS — divider list
+       POSTS
   ═══════════════════════════════════════════════════ -->
   <section id="posts">
 
-    <div class="posts-header float-in">
-      <h2 class="section-heading">posts</h2>
-      <span class="posts-count">{postCount} total</span>
-    </div>
+    <h2 class="section-heading float-in">posts</h2>
 
     {
       posts.length === 0 ? (
@@ -47,15 +40,15 @@ const postCount = posts.length;
       )
     }
 
-    <div class="posts-cta float-in">
+    <div class="back-link-wrap float-in">
       <a
         href="https://progsu.com"
-        class="cta-link"
+        class="back-link"
         style="text-shadow: 0 0 8px rgba(147,51,234,0);"
         onmouseover="this.style.color='rgba(255,255,255,1)';this.style.textShadow='0 0 12px rgba(147,51,234,1), 0 0 30px rgba(147,51,234,0.6), 0 0 60px rgba(147,51,234,0.25)';"
         onmouseout="this.style.color='rgba(255,255,255,0.40)';this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
       >
-        ← back to progsu.com
+        ← back to home
       </a>
     </div>
 
@@ -66,7 +59,6 @@ const postCount = posts.length;
 <style>
   /* ── Hero ─────────────────────────────────────────────── */
   #hero {
-    background: #000000;
     padding-top: 8rem;
     padding-bottom: 4rem;
   }
@@ -89,11 +81,6 @@ const postCount = posts.length;
     margin: 0 0 1rem;
   }
 
-  .hero-slash {
-    color: rgba(255,255,255,.35);
-    font-style: normal;
-  }
-
   .hero-desc {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 1rem;
@@ -110,29 +97,15 @@ const postCount = posts.length;
     padding-bottom: 8rem;
   }
 
-  .posts-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    padding-bottom: 1rem;
-    margin-bottom: 0;
-  }
-
   .section-heading {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: .7rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: .18em;
-    color: rgba(255,255,255,.35);
-    margin: 0;
-  }
-
-  .posts-count {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: .65rem;
-    letter-spacing: .1em;
-    color: rgba(255,255,255,.22);
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,.40);
+    margin: 0 0 0 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,.06);
   }
 
   .post-list {
@@ -142,22 +115,23 @@ const postCount = posts.length;
 
   .empty-state {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: .875rem;
-    color: rgba(255,255,255,.28);
-    letter-spacing: .08em;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: rgba(255,255,255,.30);
     padding: 4rem 0;
   }
 
-  .posts-cta {
+  .back-link-wrap {
     padding-top: 3rem;
     border-top: 1px solid rgba(255,255,255,.05);
     margin-top: 1rem;
   }
 
-  .cta-link {
+  .back-link {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: .75rem;
-    letter-spacing: .1em;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
     color: rgba(255,255,255,.40);
     text-decoration: none;
     transition: color .3s, text-shadow .3s;

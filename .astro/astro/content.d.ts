@@ -152,9 +152,51 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"posts": {
+"anthropic-workshop-preview.mdx": {
+	id: "anthropic-workshop-preview.mdx";
+  slug: "anthropic-workshop-preview";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
+"eboard-interest-meeting-2026.mdx": {
+	id: "eboard-interest-meeting-2026.mdx";
+  slug: "eboard-interest-meeting-2026";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
 "example-post.mdx": {
 	id: "example-post.mdx";
   slug: "example-post";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
+"hacklanta-2026-recap.mdx": {
+	id: "hacklanta-2026-recap.mdx";
+  slug: "hacklanta-2026-recap";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
+"member-spotlight-may-2026.mdx": {
+	id: "member-spotlight-may-2026.mdx";
+  slug: "member-spotlight-may-2026";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
+"mercedes-benz-networking-recap.mdx": {
+	id: "mercedes-benz-networking-recap.mdx";
+  slug: "mercedes-benz-networking-recap";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
+"progcast-launch.mdx": {
+	id: "progcast-launch.mdx";
+  slug: "progcast-launch";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">

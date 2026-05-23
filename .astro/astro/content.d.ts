@@ -208,6 +208,13 @@ declare module 'astro:content' {
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".mdx"] };
+"summer-2026-internships.mdx": {
+	id: "summer-2026-internships.mdx";
+  slug: "summer-2026-internships";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
 };
 
 	};

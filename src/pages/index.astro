@@ -5,9 +5,23 @@ import PostCard from "@/components/PostCard.astro";
 import { SITE_DESCRIPTION } from "@/consts";
 
 const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  (a, b) => a.data.date.valueOf() - b.data.date.valueOf()
 );
-const postCount = posts.length;
+
+// Group by season, preserving chronological order within each season
+const seasonMap = new Map<string, typeof posts>();
+for (const post of posts) {
+  const key = post.data.season ?? "other";
+  if (!seasonMap.has(key)) seasonMap.set(key, []);
+  seasonMap.get(key)!.push(post);
+}
+
+// Sort seasons by latest post date descending (most recent season first)
+const seasons = [...seasonMap.entries()].sort((a, b) => {
+  const latestA = Math.max(...a[1].map((p) => p.data.date.valueOf()));
+  const latestB = Math.max(...b[1].map((p) => p.data.date.valueOf()));
+  return latestB - latestA;
+});
 ---
 
 <Layout>
@@ -24,21 +38,26 @@ const postCount = posts.length;
 
 
   <!-- ═══════════════════════════════════════════════════
-       POSTS
+       POSTS — grouped by season
   ═══════════════════════════════════════════════════ -->
   <section id="posts">
 
-    <h2 class="section-heading float-in">posts</h2>
-
-    {
-      posts.length === 0 ? (
-        <p class="empty-state float-in">no posts yet. check back soon.</p>
-      ) : (
-        <div class="post-list">
-          {posts.map((post) => <PostCard post={post} />)}
-        </div>
-      )
-    }
+    {seasons.length === 0 ? (
+      <p class="empty-state float-in">no posts yet. check back soon.</p>
+    ) : (
+      seasons.map(([season, seasonPosts], i) => (
+        <details class="season-group float-in" open={i === 0 ? true : undefined}>
+          <summary class="season-header">
+            <span class="season-label">{season}</span>
+            <span class="season-meta">{seasonPosts.length} {seasonPosts.length === 1 ? "post" : "posts"}</span>
+            <span class="season-arrow" aria-hidden="true">↓</span>
+          </summary>
+          <div class="season-posts">
+            {seasonPosts.map((post) => <PostCard post={post} />)}
+          </div>
+        </details>
+      ))
+    )}
 
     <div class="back-link-wrap float-in">
       <a
@@ -46,7 +65,7 @@ const postCount = posts.length;
         class="back-link"
         style="text-shadow: 0 0 8px rgba(147,51,234,0);"
         onmouseover="this.style.color='rgba(255,255,255,1)';this.style.textShadow='0 0 12px rgba(147,51,234,1), 0 0 30px rgba(147,51,234,0.6), 0 0 60px rgba(147,51,234,0.25)';"
-        onmouseout="this.style.color='rgba(255,255,255,0.40)';this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
+        onmouseout="this.style.color='rgba(255,255,255,0.55)';this.style.textShadow='0 0 8px rgba(147,51,234,0)';"
       >
         ← back to home
       </a>
@@ -97,22 +116,71 @@ const postCount = posts.length;
     padding-bottom: 8rem;
   }
 
-  .section-heading {
+  /* ── Season toggle ────────────────────────────────────── */
+  .season-group {
+    border-top: 1px solid rgba(255,255,255,.06);
+    margin-bottom: 0;
+  }
+
+  .season-group:last-of-type .season-posts {
+    border-bottom: none;
+  }
+
+  .season-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  /* Remove default disclosure triangle */
+  .season-header::-webkit-details-marker { display: none; }
+  .season-header::marker { display: none; }
+
+  .season-label {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.18em;
     color: rgba(255,255,255,.65);
-    margin: 0 0 0 0;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255,255,255,.06);
+    flex: 1;
   }
 
-  .post-list {
-    display: flex;
-    flex-direction: column;
+  .season-meta {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,.30);
   }
 
+  .season-arrow {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,.30);
+    transition: transform 0.25s ease, color 0.2s;
+    display: inline-block;
+  }
+
+  .season-group[open] .season-arrow {
+    transform: rotate(180deg);
+  }
+
+  .season-header:hover .season-label {
+    color: rgba(255,255,255,.90);
+  }
+
+  .season-header:hover .season-arrow {
+    color: rgba(255,255,255,.55);
+  }
+
+  .season-posts {
+    padding-bottom: 1.5rem;
+  }
+
+  /* ── Misc ─────────────────────────────────────────────── */
   .empty-state {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 0.875rem;

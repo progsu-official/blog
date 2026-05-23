@@ -166,13 +166,6 @@ declare module 'astro:content' {
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".mdx"] };
-"example-post.mdx": {
-	id: "example-post.mdx";
-  slug: "example-post";
-  body: string;
-  collection: "posts";
-  data: InferEntrySchema<"posts">
-} & { render(): Render[".mdx"] };
 "hacklanta-2026-recap.mdx": {
 	id: "hacklanta-2026-recap.mdx";
   slug: "hacklanta-2026-recap";

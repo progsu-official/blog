@@ -286,10 +286,11 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
   const dots     = document.querySelectorAll(".mag-dot");
   const PAGES    = 4;
   const PER_PAGE = 2;
-  let current   = 0;
-  let scrolling = false;
-  let autoTimer:  ReturnType<typeof setInterval>  | null = null;
-  let idleTimer:  ReturnType<typeof setTimeout>   | null = null;
+  let current    = 0;
+  let scrolling  = false;
+  let autoActive = false;
+  let autoTimer: ReturnType<typeof setTimeout> | null = null;
+  let idleTimer: ReturnType<typeof setTimeout> | null = null;
 
   function goTo(page: number) {
     const p = (page + PAGES) % PAGES;
@@ -302,13 +303,22 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     setTimeout(() => { scrolling = false; }, 700);
   }
 
+  function scheduleNext() {
+    if (!autoActive) return;
+    autoTimer = setTimeout(() => {
+      goTo(current + 1);
+      scheduleNext();
+    }, 6000);
+  }
+
   function startAuto() {
-    if (autoTimer) clearInterval(autoTimer);
-    autoTimer = setInterval(() => goTo(current + 1), 6000);
+    autoActive = true;
+    scheduleNext();
   }
 
   function stopAuto() {
-    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    autoActive = false;
+    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
   }
 
   // Stop autoplay on manual interaction, restart after 10 s of inactivity

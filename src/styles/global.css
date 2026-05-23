@@ -149,7 +149,7 @@
   font-size: 0.75rem;
   color: rgba(147, 51, 234, 0.5);
   flex-shrink: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 #search-input {
   flex: 1;

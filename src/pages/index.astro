@@ -282,37 +282,34 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
 </style>
 
 <script>
-  const track  = document.getElementById("mag-track");
-  const dots   = document.querySelectorAll(".mag-dot");
-  const SLIDES    = 8;
-  const PER_PAGE  = 2;
-  const PAGES     = SLIDES / PER_PAGE; // 4
-  let current = 0;
-  let timer: ReturnType<typeof setInterval> | null = null;
+  const track    = document.getElementById("mag-track");
+  const dots     = document.querySelectorAll(".mag-dot");
+  const PAGES    = 4;
+  const PER_PAGE = 2;
+  let current    = 0;
+  let scrolling  = false; // block scroll-sync during smooth programmatic scroll
 
   function goTo(page: number) {
-    const slide = track?.children[page * PER_PAGE] as HTMLElement | undefined;
+    const p = (page + PAGES) % PAGES;
+    const slide = track?.children[p * PER_PAGE] as HTMLElement | undefined;
     if (!slide || !track) return;
+    scrolling = true;
     track.scrollTo({ left: slide.offsetLeft, behavior: "smooth" });
-    dots.forEach((d, i) => d.classList.toggle("active", i === page));
-    current = page;
+    dots.forEach((d, i) => d.classList.toggle("active", i === p));
+    current = p;
+    setTimeout(() => { scrolling = false; }, 700);
   }
 
-  function next() { goTo((current + 1) % PAGES); }
-  function prev() { goTo((current - 1 + PAGES) % PAGES); }
-
-  function startTimer() { timer = setInterval(next, 4000); }
-  function stopTimer()  { if (timer) { clearInterval(timer); timer = null; } }
+  // Autoplay: advance every 6 s, always running
+  setInterval(() => goTo(current + 1), 6000);
 
   // Dot clicks
-  dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => { goTo(i); stopTimer(); startTimer(); });
-  });
+  dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
 
-  // Keyboard left / right arrows
+  // Keyboard left / right
   document.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight") { next(); stopTimer(); startTimer(); }
-    if (e.key === "ArrowLeft")  { prev(); stopTimer(); startTimer(); }
+    if (e.key === "ArrowRight") goTo(current + 1);
+    if (e.key === "ArrowLeft")  goTo(current - 1);
   });
 
   // Click left or right half to navigate (ignore drags)
@@ -321,26 +318,17 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
   track?.addEventListener("click", (e: MouseEvent) => {
     if (Math.abs(e.clientX - pointerDownX) > 8) return;
     const rect = track!.getBoundingClientRect();
-    if (e.clientX - rect.left < rect.width / 2) prev(); else next();
-    stopTimer(); startTimer();
+    if (e.clientX - rect.left < rect.width / 2) goTo(current - 1); else goTo(current + 1);
   });
 
-  // Pause autoplay on hover / touch
-  track?.addEventListener("mouseenter", () => stopTimer());
-  track?.addEventListener("mouseleave", () => startTimer());
-  track?.addEventListener("touchstart",  () => stopTimer(), { passive: true });
-  track?.addEventListener("touchend",    () => { setTimeout(startTimer, 2000); });
-
-  // Sync dots on manual scroll
+  // Sync dots on manual drag scroll only
   track?.addEventListener("scroll", () => {
-    if (!track) return;
+    if (scrolling || !track) return;
     const slideW = (track.children[0] as HTMLElement)?.offsetWidth + 12;
-    const page = Math.min(Math.round(track.scrollLeft / slideW / PER_PAGE), PAGES - 1);
+    const page   = Math.min(Math.round(track.scrollLeft / slideW / PER_PAGE), PAGES - 1);
     if (page !== current) {
       dots.forEach((d, i) => d.classList.toggle("active", i === page));
       current = page;
     }
   }, { passive: true });
-
-  startTimer();
 </script>

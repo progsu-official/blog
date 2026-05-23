@@ -5,7 +5,7 @@ import PostCard from "@/components/PostCard.astro";
 import { SITE_DESCRIPTION } from "@/consts";
 
 const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => a.data.date.valueOf() - b.data.date.valueOf()
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
 // Group by season, preserving chronological order within each season

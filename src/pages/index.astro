@@ -286,8 +286,10 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
   const dots     = document.querySelectorAll(".mag-dot");
   const PAGES    = 4;
   const PER_PAGE = 2;
-  let current    = 0;
-  let scrolling  = false; // block scroll-sync during smooth programmatic scroll
+  let current   = 0;
+  let scrolling = false;
+  let autoTimer:  ReturnType<typeof setInterval>  | null = null;
+  let idleTimer:  ReturnType<typeof setTimeout>   | null = null;
 
   function goTo(page: number) {
     const p = (page + PAGES) % PAGES;
@@ -300,16 +302,29 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     setTimeout(() => { scrolling = false; }, 700);
   }
 
-  // Autoplay: advance every 6 s, always running
-  setInterval(() => goTo(current + 1), 6000);
+  function startAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 6000);
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  // Stop autoplay on manual interaction, restart after 10 s of inactivity
+  function onManual() {
+    stopAuto();
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(startAuto, 10000);
+  }
 
   // Dot clicks
-  dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+  dots.forEach((dot, i) => dot.addEventListener("click", () => { goTo(i); onManual(); }));
 
   // Keyboard left / right
   document.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight") goTo(current + 1);
-    if (e.key === "ArrowLeft")  goTo(current - 1);
+    if (e.key === "ArrowRight") { goTo(current + 1); onManual(); }
+    if (e.key === "ArrowLeft")  { goTo(current - 1); onManual(); }
   });
 
   // Click left or right half to navigate (ignore drags)
@@ -319,6 +334,7 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     if (Math.abs(e.clientX - pointerDownX) > 8) return;
     const rect = track!.getBoundingClientRect();
     if (e.clientX - rect.left < rect.width / 2) goTo(current - 1); else goTo(current + 1);
+    onManual();
   });
 
   // Sync dots on manual drag scroll only
@@ -329,6 +345,9 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     if (page !== current) {
       dots.forEach((d, i) => d.classList.toggle("active", i === page));
       current = page;
+      onManual();
     }
   }, { passive: true });
+
+  startAuto();
 </script>

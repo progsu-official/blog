@@ -72,11 +72,6 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
       </div>
     </div>
 
-    <!-- Lightbox -->
-    <div id="mag-lightbox" aria-hidden="true" aria-modal="true" role="dialog">
-      <button id="mag-lb-close" aria-label="Close">&#10005;</button>
-      <img id="mag-lb-img" src="" alt="" />
-    </div>
 
     <!-- Posts list -->
     {posts.length === 0 ? (
@@ -88,6 +83,12 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     )}
 
   </details>
+
+  <!-- Lightbox — must live outside .float-in to keep position:fixed relative to viewport -->
+  <div id="mag-lightbox" aria-hidden="true" aria-modal="true" role="dialog">
+    <button id="mag-lb-close" aria-label="Close">&#10005;</button>
+    <img id="mag-lb-img" src="" alt="" />
+  </div>
 
   <div class="back-link-wrap float-in">
     <a
@@ -163,11 +164,11 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     flex: 0 0 auto;
     background: none;
     border: none;
-    color: rgba(255,255,255,.35);
-    font-size: 1.5rem;
+    color: rgba(255,255,255,.60);
+    font-size: 2.25rem;
     line-height: 1;
     cursor: pointer;
-    padding: 0.25rem 0.1rem;
+    padding: 0.5rem 0.4rem;
     transition: color 0.2s;
     user-select: none;
   }

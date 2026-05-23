@@ -10,11 +10,10 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
 }));
 ---
 
-<!-- Search overlay -->
 <div id="search-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Search posts">
   <div id="search-box">
     <div id="search-input-row">
-      <span id="search-prompt">&#47;</span>
+      <span id="search-prompt">/</span>
       <input
         id="search-input"
         type="text"
@@ -30,10 +29,10 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
 </div>
 
 <script define:vars={{ posts }}>
-  const overlay   = document.getElementById("search-overlay");
-  const input     = document.getElementById("search-input");
-  const results   = document.getElementById("search-results");
-  const emptyMsg  = document.getElementById("search-empty");
+  const overlay  = document.getElementById("search-overlay");
+  const input    = document.getElementById("search-input");
+  const results  = document.getElementById("search-results");
+  const emptyMsg = document.getElementById("search-empty");
 
   function open() {
     overlay.setAttribute("aria-hidden", "false");
@@ -59,13 +58,10 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
     emptyMsg.textContent = "";
 
     const q = normalize(query.trim());
-
     const matched = q.length === 0
       ? posts
       : posts.filter((p) => {
-          const haystack = normalize(
-            [p.title, p.description, ...p.tags].join(" ")
-          );
+          const haystack = normalize([p.title, p.description, ...p.tags].join(" "));
           return q.split(" ").every((word) => word === "" || haystack.includes(word));
         });
 
@@ -78,16 +74,11 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
       const li = document.createElement("li");
       li.setAttribute("role", "option");
       li.setAttribute("data-index", i);
-      li.innerHTML = `
-        <a href="/posts/${p.slug}">
-          <span class="r-title">${p.title}</span>
-        </a>
-      `;
+      li.innerHTML = `<a href="/posts/${p.slug}"><span class="r-title">${p.title.toLowerCase()}</span></a>`;
       results.appendChild(li);
     });
   }
 
-  // Keyboard: open on "/", close on Escape, arrow nav
   document.addEventListener("keydown", (e) => {
     const tag = document.activeElement?.tagName;
     if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
@@ -96,10 +87,9 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
       return;
     }
     if (e.key === "Escape") { close(); return; }
-
     if (!overlay.classList.contains("open")) return;
 
-    const items = results.querySelectorAll("li");
+    const items  = results.querySelectorAll("li");
     const active = results.querySelector("li.active");
     let idx = active ? parseInt(active.dataset.index) : -1;
 
@@ -123,15 +113,12 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
 
   input.addEventListener("input", () => renderResults(input.value));
 
-  // Click outside to close
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) close();
   });
 
-  // Close button (esc badge)
   document.getElementById("search-esc").addEventListener("click", close);
 
-  // Navbar "/" badge — wait for full DOM so Navbar is present
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("search-trigger")?.addEventListener("click", (e) => {
       e.preventDefault();
@@ -139,121 +126,3 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).map((p) 
     });
   });
 </script>
-
-<style>
-  #search-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(2, 2, 10, 0.7);
-    backdrop-filter: blur(6px);
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 6rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.12s ease;
-  }
-
-  #search-overlay.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  #search-box {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 1.5rem;
-    background: rgba(6, 6, 15, 0.97);
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 0 24px rgba(76, 29, 149, 0.2), 0 8px 24px rgba(0, 0, 0, 0.7);
-  }
-
-  #search-input-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 0.85rem;
-    border-bottom: 1px solid rgba(168, 85, 247, 0.1);
-  }
-
-  #search-prompt {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: rgba(168, 85, 247, 0.5);
-    flex-shrink: 0;
-  }
-
-  #search-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.85);
-    letter-spacing: 0.02em;
-    caret-color: rgba(168, 85, 247, 0.8);
-  }
-
-  #search-input::placeholder {
-    color: rgba(255, 255, 255, 0.18);
-  }
-
-  #search-esc {
-    font-family: var(--font-mono);
-    font-size: 0.48rem;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 0.15rem 0.35rem;
-    border-radius: 3px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
-
-  #search-esc:hover {
-    color: rgba(255, 255, 255, 0.45);
-    border-color: rgba(255, 255, 255, 0.25);
-  }
-
-  #search-results {
-    list-style: none;
-    margin: 0;
-    padding: 0.3rem 0;
-    max-height: 240px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(168, 85, 247, 0.2) transparent;
-  }
-
-  :global(#search-results li a) {
-    display: block;
-    padding: 0.45rem 0.85rem 0.45rem 1.5rem;
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.01em;
-    color: rgba(255, 255, 255, 0.55);
-    transition: color 0.1s ease, background 0.1s ease;
-  }
-
-  :global(#search-results li:hover a),
-  :global(#search-results li.active a) {
-    color: rgba(216, 180, 254, 0.88);
-    background: rgba(76, 29, 149, 0.12);
-  }
-
-  #search-empty {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    color: rgba(255, 255, 255, 0.2);
-    text-align: center;
-    padding: 1rem;
-    letter-spacing: 0.08em;
-  }
-</style>

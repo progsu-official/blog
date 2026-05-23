@@ -2,156 +2,228 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Reset / base ───────────────────────────────────────────── */
+/* ── Base reset ─────────────────────────────────────────────── */
 @layer base {
   :root {
-    --font-mono: 'SF Mono', Menlo, Monaco, 'Cascadia Code', 'Fira Code', monospace;
+    --font-sans:  'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    --font-serif: 'Noto Serif', Georgia, 'Times New Roman', serif;
+    --font-mono:  'SF Mono', Menlo, Monaco, 'Cascadia Code', 'Fira Code', monospace;
+    --purple:     rgb(147, 51, 234);
   }
 
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: var(--font-sans);
   }
 
   html {
-    font-family: var(--font-mono);
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    background-color: #02020a;
-    color: rgba(255, 255, 255, 0.85);
+    background-color: #000000;
+    color: rgba(255, 255, 255, 0.60);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    position: relative;
-  }
-
-  /* ── Layer 1 — Nebula (fixed) ──────────────────────────────── */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 50% at 50% 45%, rgba(76,29,149,.25), transparent 70%),
-      radial-gradient(ellipse 50% 40% at 20% 75%, rgba(30,27,75,.35), transparent 65%),
-      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(13,42,90,.3),   transparent 65%),
-      linear-gradient(180deg, #02020a 0%, #050516 50%, #02020a 100%);
-  }
-
-  /* ── Layer 2 — Far stars (fixed) ─────────────────────────── */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: .55;
-    background-image:
-      radial-gradient(1px 1px at  14%  8%,  rgba(255,255,255,.38), transparent),
-      radial-gradient(1px 1px at  65%  4%,  rgba(255,255,255,.28), transparent),
-      radial-gradient(1px 1px at  32% 19%,  rgba(255,255,255,.42), transparent),
-      radial-gradient(1px 1px at  85% 23%,  rgba(255,255,255,.30), transparent),
-      radial-gradient(1px 1px at   7% 37%,  rgba(255,255,255,.35), transparent),
-      radial-gradient(1px 1px at  51% 43%,  rgba(255,255,255,.28), transparent),
-      radial-gradient(1px 1px at  78% 55%,  rgba(255,255,255,.40), transparent),
-      radial-gradient(1px 1px at  22% 62%,  rgba(255,255,255,.33), transparent),
-      radial-gradient(1px 1px at  93% 68%,  rgba(255,255,255,.45), transparent),
-      radial-gradient(1px 1px at  41% 77%,  rgba(255,255,255,.28), transparent),
-      radial-gradient(1px 1px at  67% 84%,  rgba(255,255,255,.36), transparent),
-      radial-gradient(1px 1px at  11% 91%,  rgba(255,255,255,.30), transparent),
-      radial-gradient(1px 1px at  55% 96%,  rgba(255,255,255,.42), transparent),
-      radial-gradient(1px 1px at  28% 48%,  rgba(255,255,255,.25), transparent),
-      radial-gradient(1px 1px at  74% 33%,  rgba(255,255,255,.38), transparent),
-      radial-gradient(1px 1px at   3% 72%,  rgba(255,255,255,.32), transparent),
-      radial-gradient(1px 1px at  88% 88%,  rgba(255,255,255,.28), transparent),
-      radial-gradient(1px 1px at  46% 14%,  rgba(255,255,255,.40), transparent),
-      radial-gradient(1px 1px at  97% 42%,  rgba(255,255,255,.35), transparent),
-      radial-gradient(1px 1px at  18% 29%,  rgba(255,255,255,.30), transparent);
-    background-size: 280px 280px;
   }
 
   a {
-    color: #818cf8; /* indigo-400 */
+    color: inherit;
     text-decoration: none;
-    transition: color 0.15s ease;
-  }
-  a:hover {
-    color: #a5b4fc; /* indigo-300 */
   }
 
   ::selection {
-    background: rgba(168, 85, 247, 0.3);
-    color: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
+    color: #000000;
   }
 
   :focus-visible {
-    outline: 1px solid rgba(168, 85, 247, 0.6);
+    outline: 1px solid rgba(147, 51, 234, 0.6);
     outline-offset: 3px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #111111; }
+  ::-webkit-scrollbar-thumb { background: #333333; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #555555; }
+}
+
+/* ── Float-in scroll reveal ─────────────────────────────────── */
+.float-in {
+  opacity: 0;
+  transform: translateY(40px);
+  filter: blur(10px);
+  transition:
+    opacity   0.9s ease-out,
+    transform 0.9s ease-out,
+    filter    0.9s ease-out;
+}
+.float-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* ── Hero wordmark pulse ─────────────────────────────────────── */
+.glow-pulse-title {
+  color: #fff;
+  text-shadow:
+    0 0 6px  rgba(59, 130, 246, 0.18),
+    0 0 12px rgba(255, 255, 255, 0.10),
+    0 0 24px rgba(59, 130, 246, 0.08);
+  animation: titlePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0%, 100% {
+    text-shadow:
+      0 0 6px  rgba(59, 130, 246, 0.18),
+      0 0 12px rgba(255, 255, 255, 0.10),
+      0 0 24px rgba(59, 130, 246, 0.08);
+  }
+  50% {
+    text-shadow:
+      0 0 8px  rgba(59, 130, 246, 0.28),
+      0 0 18px rgba(255, 255, 255, 0.16),
+      0 0 36px rgba(59, 130, 246, 0.14);
   }
 }
 
-/* ── Mid-star layer (injected via JS-free pseudo on a wrapper) ─
-   We add a <div id="stars-mid"> in Layout.astro              */
-#stars-mid {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: .7;
-  background-image:
-    radial-gradient(1.5px 1.5px at  9%  17%, rgba(216,180,254,.50), transparent),
-    radial-gradient(1.5px 1.5px at 38%   6%, rgba(255,255,255,.35), transparent),
-    radial-gradient(1.5px 1.5px at 72%  28%, rgba(186,230,253,.45), transparent),
-    radial-gradient(1.5px 1.5px at 55%  52%, rgba(216,180,254,.42), transparent),
-    radial-gradient(1.5px 1.5px at 17%  66%, rgba(255,255,255,.32), transparent),
-    radial-gradient(1.5px 1.5px at 89%  71%, rgba(216,180,254,.48), transparent),
-    radial-gradient(1.5px 1.5px at 44%  83%, rgba(186,230,253,.40), transparent),
-    radial-gradient(1.5px 1.5px at 26%  93%, rgba(255,255,255,.30), transparent),
-    radial-gradient(1.5px 1.5px at 81%  14%, rgba(255,255,255,.38), transparent),
-    radial-gradient(1.5px 1.5px at 62%  44%, rgba(216,180,254,.44), transparent),
-    radial-gradient(1.5px 1.5px at  4%  58%, rgba(186,230,253,.42), transparent),
-    radial-gradient(1.5px 1.5px at 95%  39%, rgba(255,255,255,.28), transparent),
-    radial-gradient(1.5px 1.5px at 33%  74%, rgba(216,180,254,.46), transparent);
-  background-size: 380px 380px;
+/* ── Glitch char hover ──────────────────────────────────────── */
+.glitch-char {
+  display: inline-block;
+  cursor: default;
+  transition: color 0.15s, transform 0.15s;
+}
+.glitch-char:hover {
+  color: #9333ea;
+  text-shadow:
+    0 0 5px  rgba(147, 51, 234, 0.5),
+    0 0 10px rgba(147, 51, 234, 0.3);
+  transform: scale(1.05);
 }
 
-/* ── Vignette layer ─────────────────────────────────────────── */
-#vignette {
+/* ── Search overlay ─────────────────────────────────────────── */
+#search-overlay {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.80);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20vh;
+  opacity: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 45%, rgba(0,0,0,.5) 100%);
+  transition: opacity 0.15s ease;
 }
-
-/* ── Purple orb ─────────────────────────────────────────────── */
-.orb {
-  border-radius: 50%;
+#search-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+#search-box {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 2rem;
+  background: rgba(0, 0, 0, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  overflow: hidden;
+}
+#search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+#search-prompt {
+  font-size: 0.75rem;
+  color: rgba(147, 51, 234, 0.5);
   flex-shrink: 0;
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(216,180,254,1) 0%,
-    rgba(168,85,247,1)  50%,
-    rgba(76,29,149,1)   100%
-  );
-  box-shadow: 0 0 8px rgba(168,85,247,.6);
-}
-
-/* ── Keyboard shortcut badge ────────────────────────────────── */
-.kbd {
-  border: 1px solid rgba(255,255,255,.18);
-  padding: .2rem .4rem;
-  border-radius: .25rem;
   font-family: var(--font-mono);
-  font-size: 0.5rem;
-  letter-spacing: .1em;
-  color: rgba(255,255,255,.45);
+}
+#search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+  caret-color: rgba(147, 51, 234, 0.8);
+}
+#search-input::placeholder {
+  color: rgba(255, 255, 255, 0.20);
+}
+#search-esc {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 0.2rem 0.45rem;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+#search-esc:hover {
+  color: rgba(255, 255, 255, 0.50);
+  border-color: rgba(255, 255, 255, 0.20);
+}
+#search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+#search-results li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.15s;
+  text-decoration: none;
+}
+#search-results li a::after {
+  content: '→';
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.20);
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+#search-results li:hover a,
+#search-results li.active a {
+  color: rgba(255, 255, 255, 0.90);
+}
+#search-results li:hover a::after,
+#search-results li.active a::after {
+  color: rgba(255, 255, 255, 0.50);
+}
+#search-empty {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.20);
+  text-align: center;
+  padding: 1.5rem;
+  letter-spacing: 0.1em;
 }

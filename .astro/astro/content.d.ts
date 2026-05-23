@@ -152,6 +152,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"posts": {
+"aigt-ideathon-2026.mdx": {
+	id: "aigt-ideathon-2026.mdx";
+  slug: "aigt-ideathon-2026";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
 "anthropic-workshop-preview.mdx": {
 	id: "anthropic-workshop-preview.mdx";
   slug: "anthropic-workshop-preview";
@@ -190,6 +197,13 @@ declare module 'astro:content' {
 "progcast-launch.mdx": {
 	id: "progcast-launch.mdx";
   slug: "progcast-launch";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdx"] };
+"spring-2026-kickoff.mdx": {
+	id: "spring-2026-kickoff.mdx";
+  slug: "spring-2026-kickoff";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">

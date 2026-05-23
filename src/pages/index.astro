@@ -382,7 +382,7 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
   function scheduleNext() {
     if (!autoActive) return;
     autoTimer = setTimeout(() => {
-      goTo(current + 1);
+      if (!scrolling) goTo(current + 1);
       scheduleNext();
     }, 6000);
   }
@@ -446,6 +446,10 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
 
   document.getElementById("mag-lb-close")?.addEventListener("click", closeLightbox);
   lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+
+  // Stop auto immediately when user touches the track (before any page change)
+  track?.addEventListener("pointerdown", () => onManual());
+  track?.addEventListener("touchstart",  () => onManual(), { passive: true });
 
   // Sync dots on manual drag scroll only
   track?.addEventListener("scroll", () => {

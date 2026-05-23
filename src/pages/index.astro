@@ -48,23 +48,34 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
 
     <!-- Magazine carousel -->
     <div id="magazine">
-      <div class="mag-track" id="mag-track" role="region" aria-label="Spring 2026 recap magazine">
-        {[1,2,3,4,5,6,7,8].map((n) => (
-          <div class="mag-slide">
-            <img
-              src={`/images/spring-2026/magazine/page-${n}.jpg`}
-              alt={`spring 2026 recap, page ${n}`}
-              loading={n === 1 ? "eager" : "lazy"}
-              draggable="false"
-            />
-          </div>
-        ))}
+      <div class="mag-carousel-wrap">
+        <button class="mag-prev" id="mag-prev" aria-label="Previous page">&#8249;</button>
+        <div class="mag-track" id="mag-track" role="region" aria-label="Spring 2026 recap magazine">
+          {[1,2,3,4,5,6,7,8].map((n) => (
+            <div class="mag-slide">
+              <img
+                src={`/images/spring-2026/magazine/page-${n}.jpg`}
+                alt={`spring 2026 recap, page ${n}`}
+                loading={n === 1 ? "eager" : "lazy"}
+                draggable="false"
+                data-page={n}
+              />
+            </div>
+          ))}
+        </div>
+        <button class="mag-next" id="mag-next" aria-label="Next page">&#8250;</button>
       </div>
       <div class="mag-dots" id="mag-dots" aria-hidden="true">
         {[1,2,3,4].map((n) => (
           <button class={`mag-dot${n === 1 ? " active" : ""}`} data-index={n - 1} aria-label={`Go to page ${n}`} />
         ))}
       </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="mag-lightbox" aria-hidden="true" aria-modal="true" role="dialog">
+      <button id="mag-lb-close" aria-label="Close">&#10005;</button>
+      <img id="mag-lb-img" src="" alt="" />
     </div>
 
     <!-- Posts list -->
@@ -141,7 +152,30 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     color: rgba(255,255,255,.50);
   }
 
+  .mag-carousel-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mag-prev, .mag-next {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.35);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.1rem;
+    transition: color 0.2s;
+    user-select: none;
+  }
+
+  .mag-prev:hover, .mag-next:hover { color: rgba(255,255,255,.80); }
+
   .mag-track {
+    flex: 1;
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -168,9 +202,50 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
     width: 100%;
     height: auto;
     display: block;
-    pointer-events: none;
+    cursor: zoom-in;
     user-select: none;
   }
+
+  /* ── Lightbox ─────────────────────────────────────────── */
+  #mag-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.80);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    align-items: center;
+    justify-content: center;
+  }
+
+  #mag-lightbox.open {
+    display: flex;
+  }
+
+  #mag-lb-img {
+    max-width: 88vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 0 80px rgba(0,0,0,.6);
+  }
+
+  #mag-lb-close {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.55);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+    z-index: 1000;
+  }
+
+  #mag-lb-close:hover { color: #fff; }
 
   .mag-dots {
     display: flex;
@@ -331,21 +406,45 @@ const seasons = [...seasonMap.entries()].sort((a, b) => {
   // Dot clicks
   dots.forEach((dot, i) => dot.addEventListener("click", () => { goTo(i); onManual(); }));
 
+  // Prev / next buttons
+  document.getElementById("mag-prev")?.addEventListener("click", () => { goTo(current - 1); onManual(); });
+  document.getElementById("mag-next")?.addEventListener("click", () => { goTo(current + 1); onManual(); });
+
   // Keyboard left / right
   document.addEventListener("keydown", (e: KeyboardEvent) => {
     if (e.key === "ArrowRight") { goTo(current + 1); onManual(); }
     if (e.key === "ArrowLeft")  { goTo(current - 1); onManual(); }
+    if (e.key === "Escape")     closeLightbox();
   });
 
-  // Click left or right half to navigate (ignore drags)
-  let pointerDownX = 0;
-  track?.addEventListener("pointerdown", (e: PointerEvent) => { pointerDownX = e.clientX; });
-  track?.addEventListener("click", (e: MouseEvent) => {
-    if (Math.abs(e.clientX - pointerDownX) > 8) return;
-    const rect = track!.getBoundingClientRect();
-    if (e.clientX - rect.left < rect.width / 2) goTo(current - 1); else goTo(current + 1);
-    onManual();
+  // Lightbox
+  const lightbox = document.getElementById("mag-lightbox");
+  const lbImg    = document.getElementById("mag-lb-img") as HTMLImageElement | null;
+
+  function openLightbox(src: string, alt: string) {
+    if (!lightbox || !lbImg) return;
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox?.classList.remove("open");
+    lightbox?.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  track?.querySelectorAll(".mag-slide img").forEach((img) => {
+    img.addEventListener("click", () => {
+      const el = img as HTMLImageElement;
+      openLightbox(el.src, el.alt);
+    });
   });
+
+  document.getElementById("mag-lb-close")?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
 
   // Sync dots on manual drag scroll only
   track?.addEventListener("scroll", () => {
